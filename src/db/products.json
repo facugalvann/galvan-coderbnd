@@ -1,0 +1,22 @@
+[
+  {
+    "title": "tevez",
+    "description": "jugador",
+    "price": "20",
+    "code": "4er2",
+    "stock": "8",
+    "category": "player",
+    "id": 3984,
+    "status": true
+  },
+  {
+    "title": "esteban",
+    "description": "jugador",
+    "price": "20",
+    "code": "4er2",
+    "stock": "8",
+    "category": "player",
+    "id": 9104,
+    "status": true
+  }
+]
