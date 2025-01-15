@@ -1,4 +1,3 @@
-
 <h1>Productos en Tiempo Real</h1>
 
 <ul id="productList">
@@ -10,7 +9,6 @@
   {{/each}}
 </ul>
 
-
 <form id="addProductForm">
   <input type="text" id="productName" placeholder="Nombre del producto" required>
   <input type="number" id="productPrice" placeholder="Precio" required>
@@ -21,12 +19,11 @@
 <script>
   const socket = io();
 
-
   socket.on('updateProducts', (products) => {
     const productList = document.getElementById('productList');
-    productList.innerHTML = ''; 
+    productList.innerHTML = '';
 
-    products.forEach(product => {
+    products.forEach((product) => {
       const li = document.createElement('li');
       li.id = 'product-' + product.id;
       li.innerHTML = `${product.name} - $${product.price} <button onclick="removeProduct(${product.id})">Eliminar</button>`;
@@ -34,17 +31,17 @@
     });
   });
 
-  
   document.getElementById('addProductForm').addEventListener('submit', (event) => {
     event.preventDefault();
+
     const name = document.getElementById('productName').value;
-    const price = document.getElementById('productPrice').value;
-    
-    const newProduct = { id: Date.now(), name, price: parseFloat(price) };
+    const price = parseFloat(document.getElementById('productPrice').value);
+
+    const newProduct = { id: Date.now(), name, price };
+
     socket.emit('addProduct', newProduct); 
   });
 
-  
   function removeProduct(productId) {
     socket.emit('removeProduct', productId); 
   }
