@@ -1,22 +1,16 @@
 [
   {
-    "title": "tevez",
-    "description": "jugador",
-    "price": "20",
-    "code": "4er2",
-    "stock": "8",
-    "category": "player",
-    "id": 3984,
-    "status": true
+    "title": "pan",
+    "description": "comida",
+    "price": 1224,
+    "code": "r344",
+    "stock": 2,
+    "category": "alimento",
+    "id": 1737668703184
   },
   {
-    "title": "esteban",
-    "description": "jugador",
-    "price": "20",
-    "code": "4er2",
-    "stock": "8",
-    "category": "player",
-    "id": 9104,
-    "status": true
+    "id": 1737669612479,
+    "title": "carro",
+    "price": 2000
   }
 ]

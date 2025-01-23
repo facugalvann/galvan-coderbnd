@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <ul>
-        {{#each products}}
-            <li>{{this.name}}</li>
-        {{/each}}
-    </ul>
+  {{{body}}}
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('updateProducts', (products) => {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = ''; 
+      products.forEach((product) => {
+        const li = document.createElement('li');
+        li.id = 'product-' + product.id;
+        li.innerHTML = `${product.title} - $${product.price} <button onclick="removeProduct(${product.id})">Eliminar</button>`;
+        productList.appendChild(li);
+      });
+    });
+
+    document.getElementById('addProductForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = document.getElementById('productName').value;
+      const price = parseFloat(document.getElementById('productPrice').value);
+      const newProduct = { id: Date.now(), title: name, price };
+      socket.emit('addProduct', newProduct);
+    });
+
+    function removeProduct(productId) {
+      socket.emit('removeProduct', productId);
+    }
+  </script>
 </body>
 </html>

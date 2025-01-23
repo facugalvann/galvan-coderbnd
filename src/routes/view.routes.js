@@ -1,12 +1,17 @@
-import { Router } from 'express';
-const routes = Router();
+import express from 'express';
+import productManager from '../utils/productManager.js'; 
 
-routes.get('/', (req, res) => {
-  res.render('home', { products: [] }); 
+const router = express.Router();
+
+router.get('/', async (req, res) => {
+  try {
+   
+    const products = await productManager.getProducts();
+    res.render('home', { products }); 
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+    res.status(500).send('Error al cargar productos');
+  }
 });
 
-routes.get('/realtimeproducts', (req, res) => {
-  res.render('realtimeproducts', { products: [] });
-});
-
-export default routes;
+export default router;

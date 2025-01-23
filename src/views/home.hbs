@@ -1,6 +1,33 @@
-<h1>Lista de Productos</h1>
-<ul>
+
+<h1>Productos en Tiempo Real</h1>
+<ul id="productList">
   {{#each products}}
-    <li>{{this.name}} - ${{this.price}}</li>
+    <li id="product-{{this.id}}">
+      {{this.title}} - ${{this.price}}
+      <button onclick="removeProduct({{this.id}})">Eliminar</button>
+    </li>
   {{/each}}
 </ul>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  socket.on('updateProducts', (products) => {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
+    products.forEach((product) => {
+      const li = document.createElement('li');
+      li.id = 'product-' + product.id;
+      li.innerHTML = `${product.title} - $${product.price} <button onclick="removeProduct(${product.id})">Eliminar</button>`;
+      productList.appendChild(li);
+    });
+  });
+
+ 
+
+  function removeProduct(productId) {
+    socket.emit('removeProduct', productId);
+  }
+</script>
