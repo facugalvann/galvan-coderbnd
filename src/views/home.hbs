@@ -1,5 +1,5 @@
 
-<h1>Productos en Tiempo Real</h1>
+<h1>Home</h1>
 <ul id="productList">
   {{#each products}}
     <li id="product-{{this.id}}">
@@ -9,6 +9,9 @@
   {{/each}}
 </ul>
 
+<a href="/realtimeproducts">
+  <button>Ver Productos en Tiempo Real</button>
+</a>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
