@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import fs from 'fs';
+import cartsModel from '../../models/carts.model.js'
+
 
 const cartsRoutes = Router();
 
@@ -29,33 +31,42 @@ const getSingleCartById = async (cid) => {
   return carts.find(cart => cart.id === cid);
 };
 
+cartsRoutes.get('/', async (req, res) => {
+  try {
+    const carts = await cartsModel.find({})
+  res.send(carts)
+  } catch (error) {
+    console.log(error)
+  }
+  
+})
+
 cartsRoutes.post('/', async (req, res) => {
+
+  const result = await cartsModel.create({ products: [{product: '67bbd629b6236efaff235695'}, {product:'67bbd64e51b4652e24c26d43'}] })
+  res.send(result)
   const carts = await getCarts();
-  const newCart = {
-    id: Math.floor(Math.random() * 10000),
-    products: []
-  };
-
-  carts.push(newCart);
-
+  
   const isOK = await saveCarts(carts);
   if (!isOK) {
     return res.status(500).send({ status: 'error', message: 'No se pudo crear el carrito' });
   }
 
-  res.status(200).send({ status: 'ok', message: 'Carrito creado', cart: newCart });
+ 
 });
 
 cartsRoutes.get('/:cid', async (req, res) => {
-  const cid = +req.params.cid;
-  const cart = await getSingleCartById(cid);
+  const { cid } = req.params
+  const carts = await cartsModel.find({_id: cid})
+  
 
-  if (!cart) {
+  if (!carts) {
     return res.status(404).send({ status: 'error', message: 'Carrito no encontrado' });
   }
 
-  res.send({ cart });
+  res.send(carts);
 });
+
 
 cartsRoutes.post('/:cid/product/:pid', async (req, res) => {
   const cid = +req.params.cid;
@@ -82,4 +93,4 @@ cartsRoutes.post('/:cid/product/:pid', async (req, res) => {
   res.status(200).send({ status: 'ok', message: 'Producto agregado al carrito', cart });
 });
 
-export { cartsRoutes };
+export { cartsRoutes }; 

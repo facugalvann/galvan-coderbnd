@@ -1,0 +1,62 @@
+GET http://localhost:8080/api/users
+
+###
+
+
+###
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+    "fist_name":"fede",
+    "last_name":"fede",
+    "email":"f@gmail.com"
+    
+}
+
+###
+
+
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+    "fist_name":"fede",
+    "last_name":"fede",
+    "email":"f@gmail.com"
+    
+}
+
+###
+GET http://localhost:8080/api/users/asdf
+
+###
+
+
+PUT http://localhost:8080/api/users/asdf
+
+###
+
+DELETE http://localhost:8080/api/users/asdf
+
+###
+
+GET http://localhost:8080/api/carts
+
+###
+
+
+GET http://localhost:8080/api/carts/67bc99fd8de9e9cc2a590f2d
+
+###
+
+POST http://localhost:8080/api/carts
+
+
+###
+
+GET http://localhost:8080/api/products
+
+###
+
+POST http://localhost:8080/api/products

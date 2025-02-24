@@ -4,6 +4,11 @@ import { fileURLToPath } from 'url';
 import expressHandlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import ProductManager from './managers/productManager.js';
+import mongoose from 'mongoose';
+import { connectDb } from './config/index.js';
+import usersRoutes from './routes/api/users.routes.js';
+import routerApp from './routes/index.js';
+import { productsRoutes } from './routes/api/products.routes.js';
 
 const app = express();
 const PORT = 8080;
@@ -13,22 +18,43 @@ const __dirname = path.dirname(__filename);
 
 app.engine('hbs', expressHandlebars.engine({
   extname: '.hbs',
+  helpers: {
+    add: (a, b) => a + b,
+    subtract: (a, b) => a - b,
+    gt: (a, b) => a > b,
+    lt: (a, b) => a < b,
+  }
 }));
 app.set('view engine', 'hbs');
+
 app.set('views', path.join(__dirname, 'views'));
+
+connectDb();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/api/users', usersRoutes);
+app.use('/products', productsRoutes)
+app.use(routerApp);
 
 app.get('/', async (req, res) => {
   const products = await ProductManager.getProducts();
   res.render('home', { products });
 });
 
+
+app.get('/products', async (req, res) => {
+  const products = await ProductManager.getProducts();
+  res.render('products', { products });  // Usar una vista simple sin formulario aquí
+});
+
 app.get('/realtimeproducts', async (req, res) => {
   const products = await ProductManager.getProducts();
-  res.render('realtimeproducts', { products });
+  res.render('realtimeproducts', { products });  // Usar la vista con formulario solo en esta ruta
 });
+
+
+
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

@@ -1,48 +1,75 @@
-<h1>Productos en Tiempo Real</h1>
 
-<ul id="productList">
-  {{#each products}}
-  <li id="product-{{id}}">
-    {{title}} - ${{price}}
-    <button onclick="removeProduct({{id}})">Eliminar</button>
-  </li>
-  {{/each}}
-</ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Productos en Tiempo Real</title>
+</head>
+<body>
+  <h1>Productos en Tiempo Real</h1>
 
-<a href="/">
-  <button>Ver Productos en la Página Principal</button>
-</a>
+  <ul id="productList">
+    {{#each products}}
+      <li id="product-{{id}}">
+        {{title}} - ${{price}}
+        <button onclick="removeProduct({{id}})">Eliminar</button>
+      </li>
+    {{/each}}
+  </ul>
 
-<form id="addProductForm">
-  <input type="text" id="productName" placeholder="Nombre del producto" required>
-  <input type="number" id="productPrice" placeholder="Precio" required>
-  <button type="submit">Agregar Producto</button>
-</form>
+  <a href="/">
+    <button>Ver Productos en la Página Principal</button>
+  </a>
 
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  const socket = io();
+  <form id="addProductForm">
+    <input type="text" id="productName" placeholder="Nombre del producto" required>
+    <input type="number" id="productPrice" placeholder="Precio" required>
+    <button type="submit">Agregar Producto</button>
+  </form>
 
-  socket.on('updateProducts', (products) => {
-    const productList = document.getElementById('productList');
-    productList.innerHTML = '';
-    products.forEach((product) => {
-      const li = document.createElement('li');
-      li.id = 'product-' + product.id;
-      li.innerHTML = `${product.title} - $${product.price} <button onclick="removeProduct(${product.id})">Eliminar</button>`;
-      productList.appendChild(li);
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      const socket = io();
+
+      socket.on('updateProducts', (products) => {
+        const productList = document.getElementById('productList');
+        if (productList) {
+          productList.innerHTML = ''; 
+          products.forEach((product) => {
+            if (product.id && product.title && product.price) {
+              const li = document.createElement('li');
+              li.id = 'product-' + product.id;
+              li.innerHTML = `${product.title} - $${product.price} <button onclick="removeProduct(${product.id})">Eliminar</button>`;
+              productList.appendChild(li);
+            } else {
+              console.warn('Producto con datos incompletos:', product);
+            }
+          });
+        }
+      });
+
+      const addProductForm = document.getElementById('addProductForm');
+      if (addProductForm) {
+        addProductForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const name = document.getElementById('productName').value;
+          const price = parseFloat(document.getElementById('productPrice').value);
+          if (name && price) {
+            const newProduct = { id: Date.now(), title: name, price };
+            socket.emit('addProduct', newProduct);
+          } else {
+            alert('Por favor ingrese un nombre y precio válidos para el producto.');
+          }
+        });
+      }
     });
-  });
 
-  document.getElementById('addProductForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const name = document.getElementById('productName').value;
-    const price = parseFloat(document.getElementById('productPrice').value);
-    const newProduct = { id: Date.now(), title: name, price };
-    socket.emit('addProduct', newProduct);
-  });
 
-  function removeProduct(productId) {
-    socket.emit('removeProduct', productId);
-  }
-</script>
+    function removeProduct(productId) {
+      socket.emit('removeProduct', productId);
+    }
+  </script>
+</body>
+</html>
