@@ -34,7 +34,7 @@ connectDb();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', usersRoutes);
-app.use('/products', productsRoutes)
+app.use('/api/products', productsRoutes)
 app.use(routerApp);
 
 app.get('/', async (req, res) => {
@@ -45,12 +45,12 @@ app.get('/', async (req, res) => {
 
 app.get('/products', async (req, res) => {
   const products = await ProductManager.getProducts();
-  res.render('products', { products });  // Usar una vista simple sin formulario aquí
+  res.render('products', { products });  
 });
 
 app.get('/realtimeproducts', async (req, res) => {
   const products = await ProductManager.getProducts();
-  res.render('realtimeproducts', { products });  // Usar la vista con formulario solo en esta ruta
+  res.render('realtimeproducts', { products });  
 });
 
 

@@ -1,34 +1,31 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Lista de Productos</title>
-</head>
-<body>
-  <h1>Listado de Productos</h1>
+<h1>Listado de Productos</h1>
+<ul>
+  {{#each products}}
+    <li>
+      <h3>{{title}}</h3>
+      <p>Categoria: {{category}}</p>
+      <p>Precio: ${{price}}</p>
+      <p>Stock: {{stock}}</p>
+      <a href="/products/{{id}}">Ver Detalles</a> 
+      <button onclick="addToCart({{id}})">Agregar al carrito</button> 
+    </li>
+  {{/each}}
+</ul>
 
-  <ul>
-    {{#each products}}
-      <li>
-        <h3>{{title}}</h3>
-        <p>Categoria: {{category}}</p>
-        <p>Precio: ${{price}}</p>
-        <p>Stock: {{stock}}</p>
-      </li>
-    {{/each}}
-  </ul>
-
+<div>
+  <p>Página {{page}} de {{pages}}</p>
+  <p>Total de productos: {{total}}</p>
   <div>
-    <p>Página {{page}} de {{pages}}</p>
-    <p>Total de productos: {{total}}</p>
-    <div>
-      {{#if (gt page 1)}}
-        <a href="/products?page={{subtract page 1}}&limit=10">Página Anterior</a>
-      {{/if}}
-      {{#if (lt page pages)}}
-        <a href="/products?page={{add page 1}}&limit=10">Página Siguiente</a>
-      {{/if}}
-    </div>
+    {{#if (gt page 1)}}
+      <a href="/products?page={{subtract page 1}}&limit=10">Página Anterior</a>
+    {{/if}}
+    {{#if (lt page pages)}}
+      <a href="/products?page={{add page 1}}&limit=10">Página Siguiente</a>
+    {{/if}}
   </div>
-</body>
-</html>
+</div>
+
+<script>
+  function addToCart(productId) {
+  }
+</script>

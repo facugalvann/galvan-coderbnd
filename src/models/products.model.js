@@ -15,7 +15,7 @@ const productsSchema = new Schema({
   price: Number
 });
 
-productsSchema.plugin(mongoosePaginate);
+productsSchema.plugin(mongoosePaginate);  
 
 const productsModel = model(productsCollection, productsSchema);
 

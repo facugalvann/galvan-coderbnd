@@ -19,11 +19,11 @@
 
 socket.on('updateProducts', (products) => {
   const productList = document.getElementById('productList');
-  productList.innerHTML = ''; // Limpiar la lista de productos actual
+  productList.innerHTML = ''; 
 
   products.forEach((product) => {
     const li = document.createElement('li');
-    li.id = 'product-' + product._id; // Usar '_id' en lugar de 'id'
+    li.id = 'product-' + product._id; 
     li.innerHTML = `${product.title} - $${product.price} <button onclick="removeProduct('${product._id}')">Eliminar</button>`;
     productList.appendChild(li);
   });
