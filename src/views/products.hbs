@@ -6,8 +6,8 @@
       <p>Categoria: {{category}}</p>
       <p>Precio: ${{price}}</p>
       <p>Stock: {{stock}}</p>
-      <a href="/products/{{id}}">Ver Detalles</a> 
-      <button onclick="addToCart({{id}})">Agregar al carrito</button> 
+      <a href="/products/{{id}}">Ver Detalles</a>
+      <button onclick="addToCart('{{id}}')">Agregar al carrito</button> 
     </li>
   {{/each}}
 </ul>
@@ -26,6 +26,28 @@
 </div>
 
 <script>
+ 
   function addToCart(productId) {
+    
+    fetch(`/cart/add/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ productId })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+         
+          alert('Producto agregado al carrito');
+        } else {
+          alert('Error al agregar el producto al carrito');
+        }
+      })
+      .catch(error => {
+        console.error('Error al agregar el producto al carrito:', error);
+        alert('Hubo un problema al agregar el producto');
+      });
   }
 </script>

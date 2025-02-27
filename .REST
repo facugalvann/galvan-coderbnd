@@ -46,11 +46,11 @@ GET http://localhost:8080/api/carts
 ###
 
 
-GET http://localhost:8080/api/carts/67bc99fd8de9e9cc2a590f2d
+GET http://localhost:8080/api/cart/67bc99fd8de9e9cc2a590f2d
 
 ###
 
-POST http://localhost:8080/api/carts
+POST http://localhost:8080/api/cart
 
 
 ###
